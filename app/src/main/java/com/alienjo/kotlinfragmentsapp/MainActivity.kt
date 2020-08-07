@@ -22,5 +22,14 @@ class MainActivity : AppCompatActivity(), MediatorInterface {
         ft.commit()
     }
 
+    override fun onBackPressed() {
+        //when backStackEntryCount is bigger than 1 then go back. Otherwise, finish the activity
+        when {
+            supportFragmentManager.backStackEntryCount > 1 -> super.onBackPressed()
+            else -> finish()
+        }
+
+    }
+
 
 }
