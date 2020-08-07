@@ -1,14 +1,27 @@
 package com.alienjo.kotlinfragmentsapp.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.alienjo.kotlinfragmentsapp.MediatorInterface
 import com.alienjo.kotlinfragmentsapp.R
 
 
 class ThirdFragment : Fragment() {
+
+
+    private var mMediatorCallback: MediatorInterface? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // cast the context to Mediator interface;
+        mMediatorCallback = context as MediatorInterface
+        // java equivalent::> mMediatorCallback = (MediatorInterface) context;
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -16,7 +29,18 @@ class ThirdFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_third, container, false)
+        val parentView = inflater.inflate(R.layout.fragment_third, container, false)
+
+        val btnNext: Button = parentView.findViewById(R.id.btnNext);
+
+        //onButtonClick change fragment to FirstFragment!
+        btnNext.setOnClickListener {
+            //no need to check if mMediatorCallback is null as we are using "?" to be safe
+            //SecondFragment:: class.simpleName >> "::" create run time static reference to a class; here we will get class name as fragmentTag!
+            mMediatorCallback?.changeFragmentTo(FirstFragment(), FirstFragment::class.simpleName)
+        }
+
+        return parentView
     }
 
 
